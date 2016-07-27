@@ -26,8 +26,8 @@ try:
 		res = res[0][1]
 		
 		print 'Your board: %s\nUptime is: %s' % (res["=board-name"], res["=uptime"])
-		print "\n\nYou are in an interactive menu\n-\nExample for change SSID: 'set ssid new_ssid'\n-\nShow all command example: 'help'\
-		\n-\nEnter 'quit' for Exit\n"
+		print "\n\nYou are in an interactive menu\n-\nExample for change SSID: 'set ssid new_ssid'\n-\
+		\nShow all command example: 'help'\n-\nEnter 'quit' for Exit\n"
 		
 		def menu():
 			while True:				
@@ -37,6 +37,7 @@ try:
 				elif word[0] == "set":
 					if word[1] == "ssid" and len(word) > 2:
 						res = mk.talk(["/interface/wireless/set", "=.id=wlan2", "=ssid=" + word[2]])
+						print '\nResult: %s' % (res[0][0])
 						for key in mk.talk(["/interface/wireless/print"]):
 							if key[0] == "!re":
 								print '\nYour %s SSID are: %s' % (key[1]["=name"], key[1]["=ssid"])
@@ -61,18 +62,18 @@ try:
 						for key in mk.talk(["/ip/hotspot/user/print"]):
 							if key[0] == "!re":
 								if key[1]["=.id"] != "*0":
-									print 'User: %s\nUptime: %s\nUptime limit: %s\nMAC-address: %s\nByte IN: %s\nByte OUT: %s\n' %\
+									print '\nUser: %s\nUptime: %s\nUptime limit: %s\nMAC-address: %s\nByte IN: %f\nByte OUT: %f\n' %\
 									(key[1]["=.id"], key[1]["=uptime"], key[1]["=limit-uptime"], key[1]["=mac-address"],\
 									key[1]["=bytes-in"], key[1]["=bytes-out"])
 					elif word[1] == "host":
 						for key in mk.talk(["/ip/hotspot/host/print"]):
 							if key[0] == "!re":
-								print 'User: %s\nUptime: %s\nMAC-address: %s\nIP-address: %s\nAuth: %s\nDead time: %s\n' %\
+								print '\nHost: %s\nUptime: %s\nMAC-address: %s\nIP-address: %s\nAuth: %s\nDead time: %s\n' %\
 								(key[1]["=.id"], key[1]["=uptime"], key[1]["=mac-address"], key[1]["=address"],\
 								key[1]["=authorized"], key[1]["=host-dead-time"])
 				elif word[0] == "help":
-					print "\n# Setting\n\tset ssid new_ssid\n\tset limit 12:00:00  # 12 hours\n# Printing\n\tprint res\n\tprint ssid\
-					\n\tprint limit\n\tprint users\nhelp\nquit"
+					print "\n# Setting\n\tset ssid new_ssid\n\tset limit 12:00:00  # 12 hours\
+					\n# Printing\n\tprint res\n\tprint ssid\n\tprint limit\n\tprint users\n\tprint host\nhelp\nquit"
 				else:
 					print "\nwrong ithem"
 		menu()
